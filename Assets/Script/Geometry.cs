@@ -57,9 +57,35 @@ namespace Script
         /// <summary>
         ///  点和矩形
         /// </summary>
-        public static DotGeometryR DotAndRect(Vector2 dot, Circle circle)
+        public static DotGeometryR DotAndRect(Vector2 dot, Rect rect)
         {
+            float dot1 = GetRectDot(dot,rect.topLeft, rect.bottomLeft);
+            float dot2 = GetRectDot(dot,rect.bottomLeft, rect.bottomRight);
+            float dot3 = GetRectDot(dot,rect.bottomRight, rect.topRight);
+            float dot4 = GetRectDot(dot,rect.topRight, rect.topLeft);
+            
+            //Debug.Log($"{dot1}=={dot2}=={dot3}=={dot4}");
+            if (dot1 < 0 || dot2 < 0 || dot3 < 0 || dot4 < 0)
+            {
+                return DotGeometryR.Out;
+            }
+
+            if (Mathf.Approximately(dot1, 0) ||
+                Mathf.Approximately(dot2, 0) ||
+                Mathf.Approximately(dot3, 0) ||
+                Mathf.Approximately(dot4, 0))
+            {
+                return DotGeometryR.On;
+            }
+
             return DotGeometryR.In;
+        }
+
+        private static float GetRectDot(Vector2 dot,Vector2 vertex1,Vector2 vertex2)
+        {
+            Vector2 edge1 = dot - vertex1;
+            Vector2 edge2 = vertex2 - vertex1;
+            return Vector2.Dot(edge1, edge2);
         }
 
         /// <summary>

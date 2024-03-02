@@ -16,15 +16,15 @@ namespace Script
 
         public DebugDrawSector sector1;
         public DebugDrawSector sector2;
+        
+        public DebugDrawRect rect1;
         private void Update()
         {
             // Log("dot1", Geometry.DotAndCircle(dot1.position, circle1.circleDefine), "circle1");
-            //
             // Log("circle1 circle2 Intersect", Geometry.TwoCirclesIntersect(circle1.circleDefine, circle2.circleDefine));
-            
-            Log("dot1", Geometry.DotAndSector(dot1.position, sector2.sectorDefine), "sector2");
-            
-            Log("sector1", Geometry.TwoSectorIntersect(sector1.sectorDefine, sector2.sectorDefine), "sector2");
+            // Log("dot1", Geometry.DotAndSector(dot1.position, sector2.sectorDefine), "sector2");
+            // Log("sector1", Geometry.TwoSectorIntersect(sector1.sectorDefine, sector2.sectorDefine), "sector2");
+            Log("dot1", Geometry.DotAndRect(dot1.position, rect1.rectDefine), "rect1");
         }
 
         private readonly StringBuilder mStringBuilder = new StringBuilder();

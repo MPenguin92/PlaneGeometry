@@ -51,6 +51,7 @@
      <Compile Include="Assets\Script\DebugDrawCircle.cs" />
      <Compile Include="Assets\Script\LineRendererDebugger.cs" />
      <Compile Include="Assets\Script\DebugDrawSector.cs" />
+     <Compile Include="Assets\Script\DebugDrawRect.cs" />
      <Compile Include="Assets\Script\Main.cs" />
      <Folder Include="Assets" />
      <Folder Include="Assets\Settings" />

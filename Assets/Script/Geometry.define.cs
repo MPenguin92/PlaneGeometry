@@ -29,6 +29,11 @@ namespace Script
             public float width;
             public float height;
 
+            public Vector2 topLeft => center + new Vector2(-0.5f * width, 0.5f * height);
+            public Vector2 topRight => center + new Vector2(0.5f * width, 0.5f * height);
+            public Vector2 bottomLeft => center + new Vector2(-0.5f * width, -0.5f * height);
+            public Vector2 bottomRight => center + new Vector2(0.5f * width, -0.5f * height);
+
             public Rect(Vector2 center, float width, float height)
             {
                 this.center = center;
