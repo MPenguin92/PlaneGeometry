@@ -59,11 +59,11 @@ namespace Script
         /// </summary>
         public static DotGeometryR DotAndRect(Vector2 dot, Rect rect)
         {
-            float dot1 = GetRectDot(dot,rect.topLeft, rect.bottomLeft);
-            float dot2 = GetRectDot(dot,rect.bottomLeft, rect.bottomRight);
-            float dot3 = GetRectDot(dot,rect.bottomRight, rect.topRight);
-            float dot4 = GetRectDot(dot,rect.topRight, rect.topLeft);
-            
+            float dot1 = GetRectDot(dot, rect.topLeft, rect.bottomLeft);
+            float dot2 = GetRectDot(dot, rect.bottomLeft, rect.bottomRight);
+            float dot3 = GetRectDot(dot, rect.bottomRight, rect.topRight);
+            float dot4 = GetRectDot(dot, rect.topRight, rect.topLeft);
+
             //Debug.Log($"{dot1}=={dot2}=={dot3}=={dot4}");
             if (dot1 < 0 || dot2 < 0 || dot3 < 0 || dot4 < 0)
             {
@@ -81,7 +81,7 @@ namespace Script
             return DotGeometryR.In;
         }
 
-        private static float GetRectDot(Vector2 dot,Vector2 vertex1,Vector2 vertex2)
+        private static float GetRectDot(Vector2 dot, Vector2 vertex1, Vector2 vertex2)
         {
             Vector2 edge1 = dot - vertex1;
             Vector2 edge2 = vertex2 - vertex1;
@@ -91,9 +91,14 @@ namespace Script
         /// <summary>
         ///  两矩形相交
         /// </summary>
-        public static bool TwoRectIntersect(Vector2 dot, Circle circle)
+        public static bool TwoRectIntersect(Rect rect1, Rect rect2)
         {
-            return true;
+            var resultX = Mathf.Max(rect1.bottomLeft.x, rect2.bottomLeft.x) <=
+                          Mathf.Min(rect1.topRight.x, rect2.topRight.x);
+
+            var resultY = Mathf.Max(rect1.bottomLeft.y, rect2.bottomLeft.y) <=
+                          Mathf.Min(rect1.topRight.y, rect2.topRight.y);
+            return resultX && resultY;
         }
 
         /// <summary>
@@ -115,20 +120,20 @@ namespace Script
             dot -= sector.center;
             sector.center = Vector2.zero;
             //并对齐(0,1)
-           Quaternion q =  Quaternion.Euler(0, 0, -sector.startAngle);
-           dot = q * dot;
-           sector.startAngle = 0;
-           var signedAngle = Vector2.SignedAngle(Sector.baseVec, dot);
-           //判断此时目标向量和(0,1)的夹角是否在圆心角范围内
-           if (signedAngle < 0 || signedAngle > sector.centralAngle)
-           {
-               return DotGeometryR.Out;
-           }
-           
-           if (Mathf.Abs(distSqrt - radiusSqrt) < 0.0001f)
-           {
-               return DotGeometryR.On;
-           }
+            Quaternion q = Quaternion.Euler(0, 0, -sector.startAngle);
+            dot = q * dot;
+            sector.startAngle = 0;
+            var signedAngle = Vector2.SignedAngle(Sector.baseVec, dot);
+            //判断此时目标向量和(0,1)的夹角是否在圆心角范围内
+            if (signedAngle < 0 || signedAngle > sector.centralAngle)
+            {
+                return DotGeometryR.Out;
+            }
+
+            if (Mathf.Abs(distSqrt - radiusSqrt) < 0.0001f)
+            {
+                return DotGeometryR.On;
+            }
 
 
             return DotGeometryR.In;
@@ -149,6 +154,7 @@ namespace Script
             {
                 return false;
             }
+
             //考虑到>180°的凹扇形，没有很好的办法。只能尝试细分扇形，判断是否有交点划过另一个扇形。
             if (CheckSector(s1, s2)) return true;
             if (CheckSector(s2, s1)) return true;
