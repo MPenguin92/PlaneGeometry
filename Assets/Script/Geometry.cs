@@ -179,5 +179,78 @@ namespace Script
 
             return false;
         }
+        
+        /// <summary>
+        /// 圆和矩形相交
+        /// </summary>
+        public static bool CircleRectIntersect(Circle circle,Rect rect)
+        {
+            //找到圆距离矩形最近的那个点
+            Vector2 closestPoint = circle.center;
+            if (circle.center.x < rect.topLeft.x)
+            {
+                closestPoint.x = rect.topLeft.x;
+            }
+            else if (circle.center.x > rect.bottomRight.x)
+            {
+                closestPoint.x = rect.bottomRight.x;
+            }
+            
+            if (circle.center.y > rect.topLeft.y)
+            {
+                closestPoint.y = rect.topLeft.y;
+            }
+            else if (circle.center.y < rect.bottomRight.y)
+            {
+                closestPoint.y = rect.bottomRight.y;
+            }
+
+            //计算最近点与圆心的距离
+            float circleRadiusSqu = circle.radius * circle.radius;
+            var distance = closestPoint - circle.center;
+            var distanceSqu = distance.x * distance.x + distance.y * distance.y;
+
+            if (distanceSqu < circleRadiusSqu)
+                return true;
+            return false;
+        }
+        
+        /// <summary>
+        /// 圆和扇形相交
+        /// </summary>
+        public static bool CircleSectorIntersect(Circle circle,Sector sector)
+        {
+            //把扇形搞到(0,0)点
+            circle.center -= sector.center;
+            sector.center = Vector2.zero;
+            //并对齐(0,1)
+            Quaternion q = Quaternion.Euler(0, 0, -sector.startAngle);
+            circle.center = q * circle.center;
+            sector.startAngle = 0;
+
+            float dist = Vector2.Distance(sector.center, circle.center);
+            if (dist > sector.radius + circle.radius)
+            {
+                return false;
+            }
+            
+            //在圆内
+            if (dist < circle.radius)
+            {
+                return true;
+            }
+            
+            //扇形朝向和扇形-圆形朝向夹角
+            float angle = Vector2.Angle(Sector.baseVec, (circle.center - sector.center).normalized);
+            //圆形和扇形的切角
+            float angle2 = Mathf.Atan(circle.radius / (dist)) * Mathf.Rad2Deg;
+            
+            if (angle - angle2 > sector.centralAngle * 0.5f)
+            {
+                return false;
+            }
+            
+            return true;
+        }
     }
 }

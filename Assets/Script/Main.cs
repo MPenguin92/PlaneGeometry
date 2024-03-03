@@ -26,7 +26,9 @@ namespace Script
             // Log("dot1", Geometry.DotAndSector(dot1.position, sector2.sectorDefine), "sector2");
             // Log("sector1", Geometry.TwoSectorIntersect(sector1.sectorDefine, sector2.sectorDefine), "sector2");
            //Log("dot1", Geometry.DotAndRect(dot1.position, rect1.rectDefine), "rect1");
-            Log("rect1", Geometry.TwoRectIntersect( rect1.rectDefine, rect2.rectDefine), "rect2");
+            //Log("rect1", Geometry.TwoRectIntersect( rect1.rectDefine, rect2.rectDefine), "rect2");
+            //Log("circle1", Geometry.CircleRectIntersect( circle1.circleDefine, rect1.rectDefine), "rect1");
+            //Log("circle1", Geometry.CircleSectorIntersect( circle1.circleDefine, sector1.sectorDefine), "sector1");
         }
 
         private readonly StringBuilder mStringBuilder = new StringBuilder();
